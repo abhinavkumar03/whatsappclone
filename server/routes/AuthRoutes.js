@@ -4,6 +4,6 @@ import { checkUser } from "../controllers/AuthController.js";
 
 const router = Router();
 
-router.post("/check-user",checkUser);
+ruoter.post("/check-user",checkUser);
 
 export default router
