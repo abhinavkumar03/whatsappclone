@@ -1,4 +1,6 @@
-export const HOST = "http://localhost:3005";
+require('dotenv').config();
+
+export const HOST = process.env.HOST;
 
 const AUTH_ROUTE = `${HOST}/api/auth`;
 
