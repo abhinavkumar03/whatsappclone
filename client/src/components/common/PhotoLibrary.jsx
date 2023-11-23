@@ -1,6 +1,6 @@
 import Image from "next/image";
 import React from "react";
-import { IoClose } from "react-icons/io5"
+
 
 function PhotoLibrary({setImage, hidePhotoLibrary}) {
 
