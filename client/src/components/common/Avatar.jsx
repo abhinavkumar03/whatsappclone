@@ -1,17 +1,21 @@
 import Image from "next/image";
 import React, { useState } from "react";
 import { FaCamera } from "react-icons/fa";
+import ContextMenu from "./ContextMenu";
 
 function Avatar({type, image, setImage}) {
   const [hover, setHover] = useState(false);
   const [isContextMenuVisible, setIsContextMenuVisible] = useState(false);
   const [contextMenuCordiantes, setContextMenuCordiantes] = useState({ x:0, y:0, });
   
-  const showcontextMenu = (e) => {
-    e.preventdefault();
+  const showContextMenu = (e) => {
+    e.preventDefault();
+    setContextMenuCordiantes({ x: e.pageX, y: e.pageY });
     setIsContextMenuVisible(true);
-    setContextMenuCordiantes(true);
   }
+
+  const contextMenuOptions = [
+    {name:"Take Photo", callback: ()=>{} }];
 
   return <>
     <div className="flex items-center justify-center">
@@ -32,11 +36,11 @@ function Avatar({type, image, setImage}) {
           onMouseLeave={()=>setHover(false)}
         >
           <div className={`z-10 bg-photopicker-overlay-background h-60 w-60 flex absolute top-0 left-0 items-center    rounded-full justify-center flex-col text-center gap-2 ${hover?"visible":"hidden"}`} 
-          onClick={(e)=>showcontextMenu(e)} 
+          onClick={(e)=>showContextMenu(e)} 
           id="context-opener"  
             >
             <FaCamera className="text-2xl" id="context-opener"/>
-            <span onClick={(e)=>showcontextMenu(e)}  id="context-opener" >Change <br /> Profile <br /> Photo</span>
+            <span onClick={(e)=>showContextMenu(e)}  id="context-opener" >Change <br /> Profile <br /> Photo</span>
           </div>
         <div className="flex items-center justify-center h-60 w-60" >
           <Image src={image} alt="avatar" className="rounded-full" fill />
@@ -44,6 +48,14 @@ function Avatar({type, image, setImage}) {
         </div>
       )}
     </div>
+    {
+      isContextMenuVisible && <ContextMenu 
+      options={contextMenuOptions}
+      cordinates={contextMenuCordiantes}
+      contextMenu={isContextMenuVisible}
+      setContextMenu={setIsContextMenuVisible}
+      />
+    }
   </>;
 }
 
