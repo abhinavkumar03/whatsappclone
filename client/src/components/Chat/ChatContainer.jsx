@@ -2,6 +2,7 @@ import { useStateProvider } from "@/context/StateContext";
 import { calculateTime } from "@/utils/CalculateTime";
 import React from "react";
 import MessageStatus from "../common/MessageStatus";
+import ImageMessage from "./ImageMessage";
 
 function ChatContainer() {
   const [{messages, currentChatUser, userInfo}] = useStateProvider();
@@ -22,7 +23,7 @@ function ChatContainer() {
                           calculateTime(message.createdAt)
                         }
                       </span>
-                      <span>
+                      <span className="text-bubble-meta">
                         {
                           message.senderId === userInfo.id && (
                             <MessageStatus messageStatus={message.messageStatus}/>
@@ -32,6 +33,9 @@ function ChatContainer() {
                     </div>
                   </div>
                 )}
+                {
+                  message.type==="image" && <ImageMessage message={message}/>
+                }
               </div>
             ))
           }
