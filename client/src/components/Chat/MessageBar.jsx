@@ -2,7 +2,8 @@ import { useStateProvider } from "@/context/StateContext";
 import { reducerCases } from "@/context/constants";
 import { ADD_MESSAGE_ROUTE } from "@/utils/ApiRoutes";
 import axios from "axios";
-import React, { useState } from "react";
+import EmojiPicker from "emoji-picker-react";
+import React, { useEffect, useRef, useState } from "react";
 import { BsEmojiSmile } from "react-icons/bs";
 import { FaMicrophone } from "react-icons/fa";
 import { ImAttachment } from "react-icons/im";
@@ -11,6 +12,30 @@ import { MdSend } from "react-icons/md";
 function MessageBar() {
   const [{ userInfo, currentChatUser, socket }, dispatch] = useStateProvider();
   const [message, setMessage] = useState("");
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+  const emojiPickerRef = useRef(null);
+
+  useEffect(()=>{
+    const handleOutsideClick = (event) => {
+      if(event.target.id !== "emoji-open"){
+        if(emojiPickerRef.current && !emojiPickerRef.current.contains(event.target)){
+          setShowEmojiPicker(false);
+        }
+      }
+    }
+    document.addEventListener("click",handleOutsideClick);
+    return () => {
+      document.removeEventListener("click",handleOutsideClick);
+    }; 
+  },[])
+
+  const handleEmojiModal = () => {
+    setShowEmojiPicker(!showEmojiPicker);
+  }
+  const handleEmojiClick = (emoji) => {
+    setMessage((prevMessage) => (prevMessage += emoji.emoji));
+  }
+
   const sendMessage = async () => {
     try {
       const { data } = await axios.post(ADD_MESSAGE_ROUTE, {
@@ -41,7 +66,17 @@ function MessageBar() {
       <div className="flex gap-6">
         <BsEmojiSmile
           className="text-panel-header-icon cursor-pointer text-xl"
-          title="Emoji" />
+          title="Emoji" 
+          id="emoji-open"
+          onClick={handleEmojiModal}
+          />
+          {
+            showEmojiPicker && (
+              <div className="absolute bottom-24 left-16 z-40" ref={emojiPickerRef}>
+                <EmojiPicker onEmojiClick={handleEmojiClick} theme="dark"/>
+              </div>
+            )
+          }
         <ImAttachment
           className="text-panel-header-icon cursor-pointer text-xl"
           title="Attach File" />
