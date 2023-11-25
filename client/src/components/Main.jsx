@@ -4,7 +4,7 @@ import Empty from "./Empty";
 import { onAuthStateChanged } from "firebase/auth";
 import { firebaseAuth } from "@/utils/FirebaseConfig";
 import axios from "axios";
-import { CHECK_USER_ROUTE } from "@/utils/ApiRoutes";
+import { CHECK_USER_ROUTE, GET_MESSAGES_ROUTE } from "@/utils/ApiRoutes";
 import { useRouter } from "next/router";
 import { useStateProvider } from "@/context/StateContext";
 import { reducerCases } from "@/context/constants";
@@ -15,9 +15,9 @@ function Main() {
   const [{ userInfo, currentChatUser }, dispatch] = useStateProvider();
   const [redirectLogin, setRedirectLogin] = useState(false);
 
-  useEffect(()=>{
-    if(redirectLogin) router.push("/login");
-  },[redirectLogin]);
+  useEffect(() => {
+    if (redirectLogin) router.push("/login");
+  }, [redirectLogin]);
 
   onAuthStateChanged(firebaseAuth, async (currentUser) => {
     if (!currentUser) setRedirectLogin(true);
@@ -26,23 +26,36 @@ function Main() {
       if (!data.status) {
         router.push("/login");
       }
-      if(data?.data){
-      const { id, name, email, profilePicture: profileImage, status } = data.data;
-      dispatch({
-        type: reducerCases.SET_USER_INFO,
-        userInfo: {
-          id, name, email, profileImage, status
-        },
-      });
-    }
+      if (data?.data) {
+        const { id, name, email, profilePicture: profileImage, status } = data.data;
+        dispatch({
+          type: reducerCases.SET_USER_INFO,
+          userInfo: {
+            id, name, email, profileImage, status,
+          },
+        });
+      }
     }
   });
+
+  useEffect(() => {
+    const getMessages = async () => {
+      const { data: { messages }, } = await axios.get(
+        `${GET_MESSAGES_ROUTE}/${userInfo.id}/${currentChatUser.id}`
+      );
+      dispatch({ type: reducerCases.SET_MESSAGES, messages })
+    };
+    if (currentChatUser?.id) {
+      getMessages();
+    }
+    // getMessages();
+  }, [currentChatUser]);
 
   return <>
     <div className="grid grid-cols-main h-screen w-screen max-h-screen max-w-full overflow-hidden">
       <ChatList />
       {
-        currentChatUser ? <Chat/> : <Empty/>
+        currentChatUser ? <Chat /> : <Empty />
       }
     </div>
   </>;
