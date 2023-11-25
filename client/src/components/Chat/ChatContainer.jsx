@@ -15,7 +15,7 @@ function ChatContainer() {
               <div key={message.id} className={`flex  ${message.senderId === currentChatUser.id? "justify-start":"justify-end"}`}>
                 {message.type === "text" && (
                   <div className={`text-white px-2 py-[5px] text-sm rounded-md flex gap-2 items-end max-w-[45%] ${message.senderId === currentChatUser.id?"bg-incoming-background":"bg-outgoing-background"}`}>
-                    <span className="break-all">Abhinav{message.message}</span>
+                    <span className="break-all">{message.message}</span>
                     <div className="flex gap-1 items-end">
                       <span className="text-bubble-meta text-[11px] pt-1 min-w-fit">
                         {
