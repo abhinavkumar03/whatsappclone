@@ -9,6 +9,10 @@ import { FaMicrophone } from "react-icons/fa";
 import { ImAttachment } from "react-icons/im";
 import { MdSend } from "react-icons/md";
 import PhotoPicker from "../common/PhotoPicker";
+import dynamic from "next/dynamic";
+
+
+const CaptureAudio = dynamic(()=> import("../common/CaptureAudio"),{ssr:false});
 
 function MessageBar() {
   const [{ userInfo, currentChatUser, socket }, dispatch] = useStateProvider();
@@ -16,6 +20,7 @@ function MessageBar() {
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const emojiPickerRef = useRef(null);
   const [grabPhoto, setGrabPhoto] = useState(false);
+  const [showAudioRecoder, setShowAudioRecoder] = useState(false);
 
   const PhotoPickerChange = async (e) => {
     try {
@@ -110,6 +115,8 @@ function MessageBar() {
   }, [grabPhoto]);
 
   return <div className="bg-panel-header-background h-20 px-4 flex items-center gap-6 relative">
+    {
+      !showAudioRecoder && (
     <>
       <div className="flex gap-6">
         <BsEmojiSmile
@@ -135,12 +142,19 @@ function MessageBar() {
       </div>
       <div className="flex w-10 items-center justify-center">
         <button>
-          <MdSend className="text-panel-header-icon cursor-pointer text-xl" title="Send message" onClick={sendMessage} />
-          {/* <FaMicrophone className="text-panel-header-icon cursor-pointer text-xl" title="Record"/> */}
+        {
+          message.length? 
+          <MdSend className="text-panel-header-icon cursor-pointer text-xl" title="Send message" onClick={sendMessage} /> :
+          <FaMicrophone className="text-panel-header-icon cursor-pointer text-xl" title="Record" onClick={() => setShowAudioRecoder(true)}/>
+        }
         </button>
       </div>
     </>
+  )}
     {grabPhoto && <PhotoPicker onChange={PhotoPickerChange}/>}
+    {
+      showAudioRecoder && <CaptureAudio hide={setShowAudioRecoder}/>
+    }
   </div>;
 }
 
