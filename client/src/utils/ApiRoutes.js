@@ -1,5 +1,15 @@
 
-export const HOST = "http://localhost:3005";
+const getBaseUrl = () => {
+    if (process.env.NODE_ENV === 'development') {
+      // Development environment
+      return "http://localhost:3005";
+    } else {
+      // Production environment
+      return  "https://whatsappclone-bgxe.onrender.com"; // Replace with your actual production API URL
+    }
+  };
+
+export const HOST = getBaseUrl();
 
 const AUTH_ROUTE = `${HOST}/api/auth`;
 const MESSAGES_ROUTE = `${HOST}/api/messages`;

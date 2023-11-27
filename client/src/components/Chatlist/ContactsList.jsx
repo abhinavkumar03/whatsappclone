@@ -66,7 +66,10 @@ function ContactsList() {
     {
       Object.entries(searchContacts).map(([initialLetter,userList])=>{
         return (
-          <div key={Date.now()+initialLetter}>
+          <>
+          {
+            userList.length && ( 
+            <div key={Date.now()+initialLetter}>
             <div className="text-teal-light pl-10 py-5">{initialLetter}</div>
             {
               userList.map(contact=>{
@@ -75,7 +78,10 @@ function ContactsList() {
                 )
               })
             }
-          </div>
+          </div>)
+          }
+          </>
+          
         )
       })
     }
