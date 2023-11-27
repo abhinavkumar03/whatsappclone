@@ -7,7 +7,7 @@ import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import React, { useEffect } from "react";
-import { FcGoogle } from "react-icons/Fc";
+import { FcGoogle } from "react-icons/fc";
 
 function login() {
   const router = useRouter();
