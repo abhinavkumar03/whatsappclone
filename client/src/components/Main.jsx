@@ -99,6 +99,13 @@ function Main() {
           type: reducerCases.END_CALL,
         })
       });
+
+      socket.current.on("online-users",({onlineUsers})=>{
+        dispatch({
+          type: reducerCases.SET_ONLINE_USERS,
+          onlineUsers,
+        })
+      })
           
 
       setSocketEvent(true);

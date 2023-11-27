@@ -9,7 +9,7 @@ import { reducerCases } from "@/context/constants";
 import ContextMenu from "../common/ContextMenu";
 
 function ChatHeader() {
-  const [{ currentChatUser },dispatch] = useStateProvider();
+  const [{ currentChatUser, onlineUsers },dispatch] = useStateProvider();
   const [isContextMenuVisible, setIsContextMenuVisible] = useState(false);
   const [contextMenuCordiantes, setContextMenuCordiantes] = useState({ x: 0, y: 0, });
   
@@ -58,7 +58,9 @@ function ChatHeader() {
       <div className="flex flex-col">
         <span className="text-primary-strong">{currentChatUser?.name}</span>
         <span className="text-secondary text-sm">
-          online/offline
+          {
+            onlineUsers.includes(currentChatUser.id) ? "online" : "offline"
+          }
         </span>
       </div>
     </div>
