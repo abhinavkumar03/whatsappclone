@@ -25,7 +25,7 @@ const server = app.listen(PORT,()=>{
 
 const io = new Server(server,{
     cors:{
-        origin:"http://localhost:3000",// this origin need to change while hosting
+        origin:"https://whatsappclone-inky.vercel.app/",// this origin need to change while hosting
     },
 })
 
