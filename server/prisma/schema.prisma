@@ -7,7 +7,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = "postgresql://postgres:Abhinav&2003@https://whatsappclone-bgxe.onrender.com/whatsapp?schema=public"
+  url      = "postgresql://postgres:Abhinav&2003@localhost:5432/whatsapp?schema=public"
 }
 
 model User{
