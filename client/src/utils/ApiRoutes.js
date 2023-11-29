@@ -9,7 +9,7 @@ const getBaseUrl = () => {
     }
   };
 
-export const HOST = "https://whatsappclone-bgxe.onrender.com";
+export const HOST = getBaseUrl();
 
 const AUTH_ROUTE = `${HOST}/api/auth`;
 const MESSAGES_ROUTE = `${HOST}/api/messages`;
