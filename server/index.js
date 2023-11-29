@@ -17,7 +17,9 @@ app.use("/uploads/recordings", express.static("uploads/recordings"));
 app.use("/api/auth",AuthRoutes);
 app.use("/api/messages",MessageRoutes);
 
-const server = app.listen(process.env.PORT,()=>{
+const PORT = process.env.PORT || 3005;
+
+const server = app.listen(PORT,()=>{
     console.log(`Server Started on port ${process.env.PORT}`);
 });
 
